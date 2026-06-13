@@ -5,15 +5,14 @@
   set document(
     title: [#title - #course - #university],
     author: (
-      authors.andreaS.name + " " + authors.andreaS.surname + " - Student Id " + authors.andreaS.stid,
-      authors.andreaP.name + " " + authors.andreaP.surname + " - Student Id " + authors.andreaP.stid,
+      authors.andrea.name + " " + authors.andrea.surname + " - Student Id " + authors.andrea.stid,
+      authors.matteo.name + " " + authors.matteo.surname + " - Student Id " + authors.matteo.stid,
     ),
     description: [Report for the #course course at #university],
   )
   set page(
     margin: 0em,
   )
-
 
   grid(
     columns: (35%, 65%),
@@ -24,13 +23,13 @@
         #text(weight: "bold", size: 3em)[#course]
       ]
 
-      #align(center + horizon)[
-        #text(size: 3em, weight: "bold")[#title]
-        #v(-1em)
-        #text(weight: "bold", size: 2em)[Report]
-        #v(10em)
-      ]
-
+      // #align(center + horizon)[
+      //   #text(size: 3em, weight: "bold")[#title]
+      //   #v(-1em)
+      //   #text(weight: "bold", size: 2em)[Report]
+      //   #v(10em)
+      // ]
+      #align(center + horizon)[#v(-15em) #text(size: 3em, weight: "bold")[#title] #v(1em)]
 
       #table(
         stroke: none,
@@ -43,8 +42,8 @@
             left
           }
         },
-        [*Team members*], [#authors.andreaS.name #authors.andreaS.surname (#authors.andreaS.stid)],
-        [], [#authors.andreaP.name #authors.andreaP.surname (#authors.andreaP.stid)],
+        [*Team members*], [#authors.andrea.name #authors.andrea.surname (#authors.andrea.stid)],
+        [], [#authors.matteo.name #authors.matteo.surname (#authors.matteo.stid)],
       )
 
       #align(bottom + center)[
@@ -100,6 +99,7 @@
   show link: it => underline(text(fill: linkColor)[#it])
   show ref: rf => underline(text(fill: mainColor)[#rf])
 
+  counter(page).update(1)
   set heading(numbering: "1.")
 
   show heading.where(level: 1): h => {
