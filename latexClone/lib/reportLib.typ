@@ -20,7 +20,8 @@
   show figure: set block(breakable: true)
   show link: it => underline(text(fill: linkColor)[#it])
   show ref: rf => underline(text(fill: mainColor)[#rf])
-  show par: set text(font: "CMU Serif")
+  show par: set text(font: "CMU Serif", size: 10pt)
+  show list: set text(size: 10pt)
   show heading: set text(weight: "bold")
   show heading: it => block(counter(heading).display(it.numbering) + h(1.5em) + it.body) 
 
@@ -43,8 +44,6 @@
     v(2.3mm)
   }
   show heading.where(level: 4): set text(size: 10pt)
-
-  show par: set text(size: 10pt)
 
   set page(
     margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm),
