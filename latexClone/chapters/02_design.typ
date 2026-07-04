@@ -1,4 +1,0 @@
-#pagebreak()
-= System Design
-
-Word

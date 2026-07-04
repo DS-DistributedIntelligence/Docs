@@ -20,12 +20,15 @@
   show figure: set block(breakable: true)
   show link: it => underline(text(fill: linkColor)[#it])
   show ref: rf => underline(text(fill: mainColor)[#rf])
+  show par: set text(font: "CMU Serif")
+  show heading: set text(weight: "bold")
+  show heading: it => block(counter(heading).display(it.numbering) + h(1.5em) + it.body) 
 
   counter(page).update(1)
   set heading(numbering: "1.1")
 
   show heading.where(level: 1): h => {
-    set text(size: 20pt)
+    set text(size: 17pt)
     h
     v(3.5mm)
   }
@@ -44,8 +47,7 @@
   show par: set text(size: 10pt)
 
   set page(
-    paper: "a4",
-    margin: (left: 18mm, right: 18mm, top: 25mm, bottom: 25mm),
+    margin: (left: 2cm, right: 2cm, top: 2cm, bottom: 2cm),
 
     header: [
       #context {
@@ -77,11 +79,13 @@
 }
 
 #let firstPage(title) = {
-  show par: set text(size: 17pt)
-  align(center)[#title #v(1em)]
+  show par: set text(size: 15.5pt)
+  text(weight: "regular")[#align(center)[#title #v(1em)]]
 
   show par: set text(13pt)
   align(center)[#authors.andrea.surname #authors.andrea.name, #authors.matteo.surname #authors.matteo.name #v(1em)]
 
   align(center)[#course Project -- #date]
+
+  v(1em)
 }
