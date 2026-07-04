@@ -52,7 +52,7 @@
       #context {
         if (counter(page).get().at(0) != 1) {
           grid(
-            columns: (33%, 34%, 33%),
+            columns: (53%, 14%, 33%),
             align: (x, y) => {
               if (x == 0) {
                 left + horizon
