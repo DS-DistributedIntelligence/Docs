@@ -1,1 +1,9 @@
 = Information about the use of LLM tools
+
+== Read and write management
+
+== Coordinator election
+
+During the realization of the project no LLM tools were used to produce code included in the final delivered codebase. #link("https://chatgpt.com/")[ChatGPT] has been used as a support tool to validate a limited number of approaches used to pursue the requirements of the coordination election, but only after such approaches had already been discussed by the group. This could include asking the LLM questions about possible scenarios that were not taken into consideration and should have been assessed before delivering the codebase.
+
+Finally, #link("https://languagetool.org/")[LanguageTool] has been used to check the report content in order to fix grammar mistakes and improve the readability of the content.
