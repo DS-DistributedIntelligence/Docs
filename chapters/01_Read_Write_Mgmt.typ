@@ -2,7 +2,22 @@
 
 As requirement of the project, reads must be locally performed, while writes have to be approved by the majority, and only then the coordinator can proceed to apply and broadcast the change. The database is a map of `<idx: Integer, value: Integer>`, and each replica affects only its own database.
 
-// TODO: assumption (quorum always available, mesages to ourselves use akka .tell, client timeout counter)
+== Assumptions
+
+Some assumptions must be considered in the following protocol. Some of them are required by the assignment, others were defined by us during the implementation:
+
+- reliable FIFO links are fundamental assumptions for the system network;
+
+- the quorum si always available, meaning that a write request is always processed by the coordinator, if the latter does not crash in the meanwhile;
+
+// TODO: teo check!
+- the coordinator processes one write at a time, hence a replica can be at most one write behind the coordinator.
+
+- Akka is always used to notify all the replicas, including the sender itself. However, in this scenario, the plain Akka `.tell()` function is adopted avoiding latency (that internaly the same replica is not plausible), instead of the `tell()` version in `AbstractReplica` that leverages the custom network system with delays. One example is the write request forwarding to the coordinator;
+
+// TODO: code snippet [886]
+
+- as soon as the main asks a client to request a read or a write, it immediately sends the relative message to the replica. A timeout is set for each request in order to detect a replica failure and so, to keep the client side program simple, two counters were added: `readRequestCount` increases at every read result and decreases at every read timeout expiration; if a timeout expires and the counter is negative, this means a result did not arrived and the replica crashed. `writeRequestCount` behaves similarly for write requests.
 
 == Read request
 
@@ -24,4 +39,8 @@ The quorum is defined as $Q = floor(N / 2) + 1$ where $N$ is the number of activ
 
 === Current write process
 
-The coordinator performs one write at a time. // TODO: when ProcessNextWriteIfAny is called
+The coordinator performs one write at a time, and when the current operation is completed it calls the `processNextWriteIfAny()` function, that executes the protocol for the first element in the `writeRequestsQueue` if present. This method is invoked in the following two situations:
+
+- all the acknowledgments are received, `WriteOK` was already sent to all replicas and so another write can be processed;
+
+- the timeout is expired and some ACKs were not received. The `replicasGroup` and the quorum are updated, and another write can be performed.
