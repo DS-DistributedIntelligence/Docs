@@ -13,7 +13,7 @@ Some assumptions must be considered in the following protocol. Some of them are 
 // TODO: teo check!
 - the coordinator processes one write at a time, hence a replica can be at most one write behind the coordinator;
 
-- Akka is always used to notify all the replicas, including the sender itself. However, in this scenario, the plain Akka `.tell()` function is adopted avoiding latency (that internaly the same replica is not plausible), instead of the `tell()` version in `AbstractReplica` that leverages the custom network system with delays. One example is the write request forwarding to the coordinator;
+- Akka is always used to notify all the replicas, including the sender itself. However, in this scenario, the plain Akka `.tell()` function is adopted avoiding latency (that internally the same replica is not plausible), instead of the `tell()` version in `AbstractReplica` that leverages the custom network system with delays. One example is the write request forwarding to the coordinator;
 
 // TODO: code snippet [886]
 
