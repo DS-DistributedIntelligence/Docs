@@ -1,5 +1,5 @@
 #let course = "Distributed Systems"
-#let prjName = "Distributed System Emulator"
+#let prjName = "Distributed Intelligence"
 #let mainColor = rgb("#0067b6")
 #let linkColor = blue
 #let university = "University of Trento"
