@@ -24,8 +24,6 @@ Some assumptions must be considered in the following protocol. Some of them are 
   }
   ```
 
-- as soon as a client is asked to request a read or a write, it immediately sends the relative message to the replica. A timeout is set for each request in order to detect a replica failure and so, to keep the client side program simple, two counters were added: `readRequestCount` increases at every read result and decreases at every read timeout expiration; if a timeout expires and the counter is negative, this means a result did not arrived and the replica crashed. `writeRequestCount` behaves similarly for write requests.
-
 == Read request
 
 A client may ask to a replica to read a value in the database associated to an index. Hence, the client sends the request and set a timeout in order to detect the replica failure. If no result is provided before the timeout expiration, the replica is considered crashed and the relative callback is invoked. As soon as the replica receives the request, it immediately reads the database and sends back the result.
@@ -53,3 +51,13 @@ When the current write is completed, the coordinator calls the `processNextWrite
 - all the acknowledgments are received, `WriteOK` was already sent to all replicas and so another write can be processed;
 
 - the timeout is expired and some ACKs were not received. The `replicasGroup` and the quorum are updated, and another write can be performed.
+
+== Timeouts setup
+
+As soon as a client is asked to request a read or a write, it immediately sends the relative message to the replica. A timeout is set for each request in order to detect a replica failure and so two counters were added: `readRequestCount` increases at every read result and decreases at every read timeout expiration; if a timeout expires and the counter is negative, this means a result did not arrived and the replica crashed. `writeRequestCount` behaves similarly for write requests.
+
+Both in the client side and the replica side, the following timeouts have been set:
+
+- the client sends a request and set a different timeout according to the type of the expected result. The `readTimeout` depends more on latency, while `writeTimeout` is more affected by the initial number of replicas in the system and an estimated time needed to process a write;
+
+- the coordinator sets a timeout for the acknowledgement of the write notification, that is a combination of the latency (plus tolerance) and the number of active actors in the system.

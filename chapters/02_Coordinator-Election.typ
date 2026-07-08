@@ -35,7 +35,7 @@ Another possible crash may happen when the to-be coordinator acknowledges the el
 
 In case the synchronization message is not received in time, the replica will reset the status of the election and then it will send a newly generated election message for the same crashed coordinator as before. Notice that in this situation two election messages are circulating: the one for the crashed to-be coordinator and the one for the new election. However, since the old to-be coordinator is now crashed, it will not be able to receive the message that should cause the election to end and every replica will automatically delete all remaining election messages when a new coordinator is elected, since this will cause the `coordinatorSubstitutionMap` to be populated, causing the various replicas to not consider (and removing) the remaining election messages.
 
-== Chosen timeouts
+== Timeouts setup
 
 For the coordinator election the following timeouts have been set:
 - the coordinator sends a heartbeat in broadcast every second; // coordinator beat interval
