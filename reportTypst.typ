@@ -3,7 +3,7 @@
 
 #firstPage(prjName)
 
-#tableOfContentPage(tableList: false)
+#tableOfContentPage(imageList: false, tableList: false)
 
 #show: config.with()
 
