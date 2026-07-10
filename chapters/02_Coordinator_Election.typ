@@ -15,7 +15,7 @@ Even if multiple election messages are circulating the ring, this does not mean 
 
 When a message should be removed from the ring, the acknowledgment message is still sent to the previous replica but with a boolean variable, `removedFromRing`, set as `true`: this will instruct the previous replica to also acknowledge that the election message was removed from the ring.
 
-Finally, while `previousReplicasMap` is sent as a `Collections` unmodifiable map, this does not necessarily mean that the list will always stay the same: it may happen that a replica crashes after receiving an election message for the first time: in such case, the replica that was waiting for an acknowledgement from such replica will remove the crashed replica from the map, preventing any replica from considering the crashed replica as a possible new coordinator.
+Finally, while `previousReplicasMap` is sent as a `Collections` unmodifiable map, this does not necessarily mean that the list will always stay the same. It may happen that a replica crashes after receiving an election message for the first time: in such case, the replica that was waiting for an acknowledgement from such replica will remove the crashed replica from the map, preventing any replica from considering the crashed replica as a possible new coordinator.
 
 == Synchronization message
 

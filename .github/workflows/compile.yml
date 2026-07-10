@@ -1,0 +1,52 @@
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+        - '*' 
+
+jobs:
+  compile:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v6
+        - name: Install typst for file compiling
+          uses: typst-community/setup-typst@v5
+          with:
+            typst-version: 0.14.x
+        - name: Install latex for file compiling
+          run: |
+            sudo apt install -y texlive texlive-latex-extra texlive-science latexmk
+        - name: Create output folder
+          run: mkdir compiled
+        - name: Compile with typst
+          run: |
+            typst compile reportTypst.typ ./compiled/reportTypst.pdf --root ./
+        - name: Compile with latex
+          run: |
+            latexmk -pdf -outdir=compiled reportLatex.tex
+        - name: Upload artifact
+          uses: actions/upload-artifact@v6
+          with:
+            name: CompiledPDF
+            path: "./compiled"
+  release:
+      runs-on: ubuntu-latest
+      if: github.ref_type == 'tag'
+      permissions:
+        contents: write
+      needs: compile
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v6
+        - name: Recover PDF files
+          uses: actions/download-artifact@v8
+          with:
+            name: CompiledPDF
+            path: ./CompiledPDF
+        - name: Release
+          uses: softprops/action-gh-release@v2
+          with: 
+            files: |
+              ./CompiledPDF/reportTypst.pdf
+              ./CompiledPDF/reportLatex.pdf

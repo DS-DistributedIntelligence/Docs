@@ -1,0 +1,31 @@
+\section{Crash Management}
+
+\subsection{General Information}
+
+To crash a replica, it is sufficient to send a \texttt{Crash} message to the desired replica. More information on the type of crash will be explained in the following sections, but the check is always the same: if the crash is of the desired type and the number of messages is now set at 0, the \texttt{crashNow()} method is invoked. The method stops the heartbeat messages sending task, the heartbeat messages checking task and the synchronization message checking task (if active), to then invoke \texttt{getContext().stop(getSelf())}, which effectively and realistically stops the Akka Actor. To avoid error logs by Akka due to the fact that a now no longer active replica is still receiving messages, an \texttt{application.conf} file was added to the project containing the \texttt{akka.log-dead-letters = 0} and \texttt{akka.log-dead-letters-during-shutdown = off} configurations (which make Akka not log messages sent to killed Actors or Actors that are currently being shut down).
+
+\subsection{Crash during read and write}
+
+To simulate crashes during the update protocol, the enumerator in the \texttt{Crash} class is populated with specific types. In particular, they allow a replica to fail:
+
+\begin{itemize}
+\item after processing an update, namely the unstable write is executed (\texttt{Update});
+
+\item after processing a write acknowledgment message (\texttt{WriteOK}).
+\end{itemize}
+
+Checks for crashes are set at the end of \texttt{performUnstableWrite()} and \texttt{performUpdate()} methods respectively, all invoking the \texttt{crashNow()} method if they need to crash.
+
+\subsection{Crash during coordinator election}
+
+To simulate crashes during the election, it is possible to crash the replica:
+
+\begin{itemize}
+\item after receiving a certain number of heartbeat messages (\texttt{Heartbeat});
+
+\item after processing a certain number of election messages (\texttt{Election});
+
+\item before sending a synchronization message (\texttt{ElectionSync}).
+\end{itemize}
+
+Checks for crashes are set at the start of \texttt{checkHeartbeatMsgStatus()}, \texttt{onElectionStartedMsg()} and \\ \texttt{sendSynchronizationMsg()} methods respectively, all invoking the \texttt{crashNow()} method if they need to crash.

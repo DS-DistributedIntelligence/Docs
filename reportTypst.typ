@@ -1,9 +1,11 @@
-#import "./lib/common.typ": course, prjName
-#import "./lib/reportLib.typ": config, firstPage
-
-#show: config.with()
+#import "lib/common.typ": course, prjName
+#import "lib/reportLib.typ": config, firstPage, tableOfContentPage
 
 #firstPage(prjName)
+
+#tableOfContentPage(tableList: false)
+
+#show: config.with()
 
 /*
 Example of questions that your report is
@@ -26,7 +28,7 @@ Provided sections are example and can be changed. Default were:
 Can add all packages you want
 */
 
-#include "../chapters/01_Read_Write_Mgmt.typ"
-#include "../chapters/02_Coordinator-Election.typ"
-#include "../chapters/03_Crash_Mgmt.typ"
-#include "./../chapters/04_LLM.typ"
+#include "chapters/01_Read_Write_Mgmt.typ"
+#include "chapters/02_Coordinator_Election.typ"
+#include "chapters/03_Crash_Mgmt.typ"
+#include "chapters/04_LLM.typ"
